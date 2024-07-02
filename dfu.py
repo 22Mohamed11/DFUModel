@@ -13,7 +13,7 @@ model = keras.models.load_model('dfu.keras')
 class_labels = ['DFU', 'Wound']
 
 def preprocess_image(image):
-    img = image.resize((150, 150))  
+    img = image.resize((150, 150))
     img_array = np.array(img) 
     img_array = img_array / 255.0 
     img_array = np.expand_dims(img_array, axis = 0) 
