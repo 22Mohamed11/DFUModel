@@ -9,10 +9,8 @@ import keras
 
 app = Flask(__name__)
 
-# Load the pre-trained model DFU
 model = keras.models.load_model('dfu.keras')
 class_labels = ['DFU', 'Wound']
-
 
 def preprocess_image(image):
     img = image.resize((150, 150))  
@@ -21,7 +19,6 @@ def preprocess_image(image):
     img_array = np.expand_dims(img_array, axis = 0) 
     return img_array
 
-#predict DFU
 @app.route('/dfu', methods=['POST'])
 
 def predict():
