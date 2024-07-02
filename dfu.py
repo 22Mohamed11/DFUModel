@@ -1,3 +1,6 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 from flask import Flask, request, jsonify
 import numpy as np
 from PIL import Image
@@ -12,10 +15,10 @@ class_labels = ['DFU', 'Wound']
 
 
 def preprocess_image(image):
-    img = image.resize((150, 150))  # Resize the image to match model input size
-    img_array = np.array(img)  # Convert PIL image to numpy array
-    img_array = img_array / 255.0  # Normalize pixel values
-    img_array = np.expand_dims(img_array, axis = 0)  # Add batch dimension
+    img = image.resize((150, 150))  
+    img_array = np.array(img) 
+    img_array = img_array / 255.0 
+    img_array = np.expand_dims(img_array, axis = 0) 
     return img_array
 
 #predict DFU
@@ -34,14 +37,11 @@ def predict():
             image = Image.open(io.BytesIO(file.read()))
             img_array = preprocess_image(image)
 
-            # Make predictions using the loaded model
             predictions = model.predict(img_array)
 
-            # Get the predicted class index
             predicted_class_index = np.argmax(predictions)
             predicted_class_label = class_labels[predicted_class_index]
 
-            # Get class probabilities
             class_probabilities = predictions[0].tolist()
 
             return jsonify({
